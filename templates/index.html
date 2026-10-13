@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Based Career Counselling</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
+    input { width: min(100%, 34rem); padding: .7rem; }
+    button { padding: .7rem 1rem; cursor: pointer; }
+    #response { white-space: pre-wrap; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>AI-Based Career Counselling</h1>
+  <p>Ask about career areas, type <code>capabilities</code>, or type <code>recommend</code> to start the assessment.</p>
+  <form id="chat-form">
+    <label for="user_input">Your message</label><br>
+    <input id="user_input" name="user_input" required autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+  <p id="response" role="status"></p>
+  <script>
+    document.getElementById("chat-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = document.getElementById("user_input");
+      const output = document.getElementById("response");
+      output.textContent = "Please wait…";
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({user_input: input.value})
+        });
+        const data = await response.json();
+        output.textContent = data.response || data.error || "No response received.";
+      } catch (_) {
+        output.textContent = "Could not reach the server. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>

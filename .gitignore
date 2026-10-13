@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.pkl
+*.pk1
+static/ocean_score.png
+static/svm_confusion_matrix.png
+instance/
+.pytest_cache/
